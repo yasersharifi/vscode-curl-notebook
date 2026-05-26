@@ -21,4 +21,4 @@ curl -sS '{{baseUrl}}/get' \
 // POST with JSON body (reuses args from healthCheck URL host)
 curl -sS -X POST '{{baseUrl}}/post' \
   -H 'Content-Type: application/json' \
-  -d '{"hello": "notebook-curl", "origin": "{{healthCheck.response.body.origin}}"}'
+  -d '{"hello": "vscode-curl-notebook", "origin": "{{healthCheck.response.body.origin}}"}'
