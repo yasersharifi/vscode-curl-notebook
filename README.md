@@ -81,6 +81,8 @@ _Coming soon._
 3. Click **Run** on a cell (or run all).
 4. Inspect markdown output under each cell.
 
+**Important:** Open the file as **Curl Notebook**, not as a plain text / Markdown editor. Variables (`@name = …`) only work in the notebook; `@` lines used to open as Markdown cells and were skipped — that is fixed in 0.2.5+. After upgrading, **close the tab and Open With → Curl Notebook** again so cells reload as code where needed.
+
 ### Cell separators
 
 | Style | Delimiter |

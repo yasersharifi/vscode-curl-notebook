@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.5 — 2026-05-26
+
+### Fixed
+
+- `@variable` cells are **code** cells again (not Markdown) so Run works and `{{name}}` resolves
+- Variables panel syncs from all code cells when the notebook opens or becomes active
+
 ## 0.2.4 — 2026-05-26
 
 ### Fixed

@@ -48,3 +48,10 @@ test('markdown wrapper cells deserialize as markdown', () => {
   assert.equal(cells[0].kind, 'markdown');
   assert.equal(cells[0].source, '# Title');
 });
+
+test('@variable cells deserialize as code not markdown', () => {
+  const splitter = new CellSplitter('triple-hash');
+  const cells = splitter.split('@baseUrl = https://api.example.com\n@token = abc');
+  assert.equal(cells.length, 1);
+  assert.equal(cells[0].kind, 'code');
+});

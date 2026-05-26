@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import { getNotebookSession } from '../notebook/notebook-session';
+import { syncNotebookVariables } from '../notebook/sync-notebook-variables';
 
 type VariableTreeItem = vscode.TreeItem & {
   variableName?: string;
@@ -37,6 +38,7 @@ export class VariablesTreeProvider
       ];
     }
 
+    syncNotebookVariables(notebook);
     const session = getNotebookSession(notebook);
     const vars = session.variables.getAll();
     const items: VariableTreeItem[] = [

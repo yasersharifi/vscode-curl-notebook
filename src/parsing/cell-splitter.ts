@@ -1,4 +1,5 @@
 import type { CellBlock } from '../domain/cell-block';
+import { extractExecutableCurl, parseVariableLines } from './variable-parser';
 
 export type CellDelimiterMode = 'triple-hash' | 'double-newline' | 'auto';
 
@@ -60,6 +61,14 @@ function toCellBlock(chunk: string): CellBlock {
 }
 
 function isMarkdownOnlyCell(text: string): boolean {
+  // @name = value cells must stay code cells so they can be run / synced
+  if (parseVariableLines(text).length > 0) {
+    return false;
+  }
+  if (extractExecutableCurl(text) !== null) {
+    return false;
+  }
+
   const lines = text.split('\n').map((l) => l.trim());
   const nonEmpty = lines.filter((l) => l.length > 0);
   if (nonEmpty.length === 0) {
@@ -69,7 +78,6 @@ function isMarkdownOnlyCell(text: string): boolean {
     (line) =>
       line.startsWith('//') ||
       line.startsWith('#') ||
-      line.startsWith('@') ||
       /^\/\*markdown/.test(line)
   );
 }
