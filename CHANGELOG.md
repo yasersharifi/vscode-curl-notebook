@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.1 — 2026-05-26
+
+### Added
+
+- **IntelliSense** in curl notebook cells: flags (`-H`, `-d`, …), snippets, HTTP methods, headers, session `{{variables}}`
+- Dedicated `curl-cell` language for notebook code cells
+- Setting `curlNotebook.enableSuggestions` (default: `true`)
+
 ## 0.2.0 — 2026-05-26
 
 ### Changed

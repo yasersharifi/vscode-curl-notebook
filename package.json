@@ -2,7 +2,7 @@
   "name": "vscode-curl-notebook",
   "displayName": "Curl Notebook",
   "description": "View .http and .curl files as notebooks. Execute curl cells and inspect responses interactively.",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "publisher": "yasersharifi",
   "license": "MIT",
   "icon": "media/icon.svg",
@@ -30,6 +30,7 @@
   ],
   "activationEvents": [
     "onNotebook:curl-notebook",
+    "onLanguage:curl-cell",
     "onView:curlnotebook-variables"
   ],
   "main": "./dist/extension.js",
@@ -41,6 +42,13 @@
     }
   },
   "contributes": {
+    "languages": [
+      {
+        "id": "curl-cell",
+        "aliases": ["Curl Cell", "cURL"],
+        "configuration": "./language/curl-cell.language-configuration.json"
+      }
+    ],
     "notebooks": [
       {
         "type": "curl-notebook",
@@ -177,6 +185,11 @@
           "additionalProperties": {
             "type": "string"
           }
+        },
+        "curlNotebook.enableSuggestions": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show curl flag, snippet, and variable completions while typing in notebook cells."
         }
       }
     },

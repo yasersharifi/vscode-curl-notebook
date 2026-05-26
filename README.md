@@ -21,6 +21,7 @@ Inspired by [SQL Notebook](https://marketplace.visualstudio.com/items?itemName=c
 - **Named requests** — `# @name login` then `{{login.response.body.token}}`
 - **Variables panel** in the activity bar
 - **Markdown output** — status, timing, headers, JSON/HTML body
+- **IntelliSense** — curl flags, snippets, HTTP methods, headers, and `{{variables}}` as you type
 
 ## Screenshots
 
@@ -128,6 +129,7 @@ Document your endpoints here.
 | `curlNotebook.loadDotenv` | `true` | Load workspace `.env` |
 | `curlNotebook.dotenvFile` | `.env` | Dotenv file path |
 | `curlNotebook.variables` | `{}` | Workspace-wide variables |
+| `curlNotebook.enableSuggestions` | `true` | Autocomplete in curl cells |
 
 ## Requirements
 

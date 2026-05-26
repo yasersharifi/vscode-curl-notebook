@@ -20,6 +20,7 @@ const testEntries = [
   'test/unit/variable-parser.test.ts',
   'test/unit/curl-tokenizer.test.ts',
   'test/unit/response-path-resolver.test.ts',
+  'test/unit/curl-completion.test.ts',
 ];
 
 async function buildTests() {

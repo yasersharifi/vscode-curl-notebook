@@ -1,8 +1,8 @@
 /** Notebook type id registered with VS Code. */
 export const NOTEBOOK_TYPE = 'curl-notebook';
 
-/** Language id for executable curl cells. */
-export const CURL_LANGUAGE_ID = 'shell';
+/** Language id for executable curl cells in the notebook editor. */
+export const CURL_LANGUAGE_ID = 'curl-cell';
 
 /** Language id for markdown documentation cells. */
 export const MARKDOWN_LANGUAGE_ID = 'markdown';

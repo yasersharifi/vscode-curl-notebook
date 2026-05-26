@@ -40,6 +40,7 @@ flowchart LR
 | `variable-substitutor.ts` | `{{…}}` replacement | Template method |
 | `curl-executor.ts` | `spawn(curl)` → `HttpResponse` | Adapter |
 | `response-formatter.ts` | `HttpResponse` → markdown | Presenter |
+| `curl-completion-provider.ts` | Flags, snippets, variables | Completion |
 | `notebook-session.ts` | Per-document state | Session |
 
 ## Cell delimiters
