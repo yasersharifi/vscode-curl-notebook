@@ -1,0 +1,224 @@
+{
+  "name": "vscode-curl-notebook",
+  "displayName": "Curl Notebook",
+  "description": "View .http and .curl files as notebooks. Execute curl cells and inspect responses interactively.",
+  "version": "0.2.0",
+  "publisher": "yasersharifi",
+  "license": "MIT",
+  "icon": "media/icon.svg",
+  "homepage": "https://github.com/yasersharifi/vscode-curl-notebook#readme",
+  "bugs": {
+    "url": "https://github.com/yasersharifi/vscode-curl-notebook/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yasersharifi/vscode-curl-notebook.git"
+  },
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Notebooks",
+    "Other"
+  ],
+  "keywords": [
+    "curl",
+    "http",
+    "rest",
+    "notebook",
+    "api"
+  ],
+  "activationEvents": [
+    "onNotebook:curl-notebook",
+    "onView:curlnotebook-variables"
+  ],
+  "main": "./dist/extension.js",
+  "capabilities": {
+    "virtualWorkspaces": false,
+    "untrustedWorkspaces": {
+      "supported": false,
+      "description": "Curl Notebook executes shell commands and requires a trusted workspace."
+    }
+  },
+  "contributes": {
+    "notebooks": [
+      {
+        "type": "curl-notebook",
+        "displayName": "Curl Notebook",
+        "priority": "option",
+        "selector": [
+          {
+            "filenamePattern": "*.http"
+          },
+          {
+            "filenamePattern": "*.curl"
+          }
+        ]
+      }
+    ],
+    "commands": [
+      {
+        "command": "curlnotebook.openAsNotebook",
+        "title": "Open as Curl Notebook",
+        "category": "Curl Notebook"
+      },
+      {
+        "command": "curlnotebook.runCell",
+        "title": "Run Curl Cell",
+        "category": "Curl Notebook",
+        "icon": "$(play)"
+      },
+      {
+        "command": "curlnotebook.refreshVariables",
+        "title": "Refresh Variables",
+        "category": "Curl Notebook",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "curlnotebook.clearVariables",
+        "title": "Clear Session Variables",
+        "category": "Curl Notebook"
+      },
+      {
+        "command": "curlnotebook.addVariable",
+        "title": "Add Workspace Variable",
+        "category": "Curl Notebook"
+      }
+    ],
+    "menus": {
+      "explorer/context": [
+        {
+          "command": "curlnotebook.openAsNotebook",
+          "when": "resourceExtname == .http || resourceExtname == .curl",
+          "group": "navigation@10"
+        }
+      ],
+      "editor/title": [
+        {
+          "command": "curlnotebook.openAsNotebook",
+          "when": "resourceExtname == .http || resourceExtname == .curl",
+          "group": "navigation@10"
+        }
+      ],
+      "view/title": [
+        {
+          "command": "curlnotebook.refreshVariables",
+          "when": "view == curlnotebook-variables",
+          "group": "navigation"
+        },
+        {
+          "command": "curlnotebook.addVariable",
+          "when": "view == curlnotebook-variables",
+          "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "curlnotebook.clearVariables",
+          "when": "view == curlnotebook-variables && viewItem == session-root",
+          "group": "inline"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Curl Notebook",
+      "properties": {
+        "curlNotebook.cellDelimiter": {
+          "type": "string",
+          "enum": [
+            "triple-hash",
+            "double-newline",
+            "auto"
+          ],
+          "default": "auto",
+          "description": "How cells are split in the source file. 'auto' prefers ### separators when present."
+        },
+        "curlNotebook.curlPath": {
+          "type": "string",
+          "default": "curl",
+          "description": "Path to the curl executable."
+        },
+        "curlNotebook.defaultTimeoutMs": {
+          "type": "number",
+          "default": 60000,
+          "minimum": 1000,
+          "description": "Maximum time in milliseconds to wait for a curl request."
+        },
+        "curlNotebook.maxBodyChars": {
+          "type": "number",
+          "default": 50000,
+          "minimum": 1000,
+          "description": "Maximum response body characters shown in notebook output."
+        },
+        "curlNotebook.followRedirects": {
+          "type": "boolean",
+          "default": true,
+          "description": "Pass -L to curl to follow HTTP redirects."
+        },
+        "curlNotebook.insecureTls": {
+          "type": "boolean",
+          "default": false,
+          "description": "Pass -k to curl to allow insecure TLS connections."
+        },
+        "curlNotebook.loadDotenv": {
+          "type": "boolean",
+          "default": true,
+          "description": "Load variables from a .env file in the workspace folder when a notebook runs."
+        },
+        "curlNotebook.dotenvFile": {
+          "type": "string",
+          "default": ".env",
+          "description": "Relative path to the dotenv file used when loadDotenv is enabled."
+        },
+        "curlNotebook.variables": {
+          "type": "object",
+          "default": {},
+          "description": "Workspace-level variables available as {{name}} in all curl notebooks.",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "curlnotebook",
+          "title": "Curl Notebook",
+          "icon": "media/icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "curlnotebook": [
+        {
+          "id": "curlnotebook-variables",
+          "name": "Variables",
+          "icon": "media/icon.svg"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "node esbuild.config.mjs",
+    "watch": "node esbuild.config.mjs --watch",
+    "lint": "eslint src --ext .ts",
+    "test": "npm run compile && node ./out/test/runTest.js",
+    "test:unit": "npm run compile && node --test dist-test/*.test.js",
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^20.14.0",
+    "@types/vscode": "^1.85.0",
+    "@typescript-eslint/eslint-plugin": "^7.18.0",
+    "@typescript-eslint/parser": "^7.18.0",
+    "@vscode/test-electron": "^2.4.0",
+    "@vscode/vsce": "^2.32.0",
+    "esbuild": "^0.23.0",
+    "eslint": "^8.57.0",
+    "mocha": "^10.7.0",
+    "typescript": "^5.5.0"
+  }
+}

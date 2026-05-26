@@ -1,0 +1,24 @@
+@baseUrl = https://httpbin.org
+@accept = application/json
+
+###
+
+/*markdown
+# Curl Notebook sample
+
+Run cells with the play button. Variables use `{{name}}` syntax.
+*/
+
+###
+
+// GET request
+# @name healthCheck
+curl -sS '{{baseUrl}}/get' \
+  -H 'accept: {{accept}}'
+
+###
+
+// POST with JSON body (reuses args from healthCheck URL host)
+curl -sS -X POST '{{baseUrl}}/post' \
+  -H 'Content-Type: application/json' \
+  -d '{"hello": "notebook-curl", "origin": "{{healthCheck.response.body.origin}}"}'
