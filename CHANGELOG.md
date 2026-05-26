@@ -1,5 +1,24 @@
 # Changelog
 
+## 0.2.4 — 2026-05-26
+
+### Fixed
+
+- Activity bar: use **PNG** icons (24×24); activate extension on **`onStartupFinished`** so the sidebar icon loads at launch
+- Icon build script always regenerates activity bar PNGs (no early exit on marketplace icon only)
+
+## 0.2.3 — 2026-05-26
+
+### Fixed
+
+- Activity bar icons: correct 24×24 monochrome SVGs with separate light/dark theme files (previous file was a copy of the 128px marketing icon)
+
+## 0.2.2 — 2026-05-26
+
+### Fixed
+
+- Activity bar icon: use monochrome `activitybar-icon.svg` (VS Code ignores gradients/text in sidebar icons)
+
 ## 0.2.1 — 2026-05-26
 
 ### Added

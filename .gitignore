@@ -3,6 +3,8 @@ dist/
 dist-test/
 out/
 *.vsix
+# PNGs are generated in prepackage; commit them for installs without ffmpeg
+# !media/activitybar-*.png
 .DS_Store
 *.log
 .env

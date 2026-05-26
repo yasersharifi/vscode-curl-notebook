@@ -2,7 +2,7 @@
   "name": "vscode-curl-notebook",
   "displayName": "Curl Notebook",
   "description": "View .http and .curl files as notebooks. Execute curl cells and inspect responses interactively.",
-  "version": "0.2.1",
+  "version": "0.2.4",
   "publisher": "yasersharifi",
   "license": "MIT",
   "icon": "media/icon.png",
@@ -29,6 +29,7 @@
     "api"
   ],
   "activationEvents": [
+    "onStartupFinished",
     "onNotebook:curl-notebook",
     "onLanguage:curl-cell",
     "onView:curlnotebook-variables"
@@ -198,7 +199,10 @@
         {
           "id": "curlnotebook",
           "title": "Curl Notebook",
-          "icon": "media/icon.svg"
+          "icon": {
+            "light": "media/activitybar-light.png",
+            "dark": "media/activitybar-dark.png"
+          }
         }
       ]
     },
@@ -207,7 +211,10 @@
         {
           "id": "curlnotebook-variables",
           "name": "Variables",
-          "icon": "media/icon.svg"
+          "icon": {
+            "light": "media/activitybar-light.png",
+            "dark": "media/activitybar-dark.png"
+          }
         }
       ]
     }
@@ -221,7 +228,8 @@
     "test:unit": "npm run compile && node --test dist-test/*.test.js",
     "icon": "node scripts/generate-icon.mjs",
     "prepackage": "npm run icon",
-    "package": "vsce package"
+    "package": "vsce package",
+    "verify:package": "node scripts/verify-vsix-icons.mjs"
   },
   "devDependencies": {
     "@types/mocha": "^10.0.10",

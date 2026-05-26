@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 /**
- * Builds media/icon.png (128×128) from media/icon.svg for vsce packaging.
- * vsce requires PNG for package.json "icon"; activity bar may use SVG.
+ * Builds PNG icons for vsce (marketplace) and the activity bar (24×24).
  */
 import { spawnSync } from 'child_process';
 import { existsSync } from 'fs';
@@ -9,42 +8,50 @@ import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
-const svg = join(root, 'media/icon.svg');
-const png = join(root, 'media/icon.png');
 
 function commandExists(cmd) {
   return spawnSync('which', [cmd], { encoding: 'utf8' }).status === 0;
 }
 
-function run(cmd, args) {
-  const result = spawnSync(cmd, args, { stdio: 'inherit' });
-  return result.status === 0 && existsSync(png);
+function svgToPng(svgPath, pngPath, size) {
+  if (!existsSync(svgPath)) {
+    console.error(`[icon] missing ${svgPath}`);
+    return false;
+  }
+
+  const attempts = [
+    ['rsvg-convert', ['-w', String(size), '-h', String(size), svgPath, '-o', pngPath]],
+    ['convert', [svgPath, '-resize', `${size}x${size}`, pngPath]],
+    ['magick', ['convert', svgPath, '-resize', `${size}x${size}`, pngPath]],
+    ['ffmpeg', ['-y', '-i', svgPath, '-vf', `scale=${size}:${size}`, pngPath]],
+  ];
+
+  for (const [cmd, args] of attempts) {
+    if (!commandExists(cmd)) {
+      continue;
+    }
+    const result = spawnSync(cmd, args, { stdio: 'inherit' });
+    if (result.status === 0 && existsSync(pngPath)) {
+      console.log(`[icon] ${pngPath} (${size}px) via ${cmd}`);
+      return true;
+    }
+  }
+
+  return false;
 }
 
-if (existsSync(png)) {
-  console.log(`[icon] ${png} already exists`);
-  process.exit(0);
-}
-
-const attempts = [
-  ['rsvg-convert', ['-w', '128', '-h', '128', svg, '-o', png]],
-  ['convert', [svg, '-resize', '128x128', png]],
-  ['magick', ['convert', svg, '-resize', '128x128', png]],
-  ['ffmpeg', ['-y', '-i', svg, '-vf', 'scale=128:128', png]],
+const jobs = [
+  { svg: 'media/icon.svg', png: 'media/icon.png', size: 128 },
+  { svg: 'media/activitybar-light.svg', png: 'media/activitybar-light.png', size: 24 },
+  { svg: 'media/activitybar-dark.svg', png: 'media/activitybar-dark.png', size: 24 },
 ];
 
-for (const [cmd, args] of attempts) {
-  if (!commandExists(cmd)) {
-    continue;
-  }
-  if (run(cmd, args)) {
-    console.log(`[icon] wrote ${png} via ${cmd}`);
-    process.exit(0);
+let failed = false;
+for (const { svg, png, size } of jobs) {
+  if (!svgToPng(join(root, svg), join(root, png), size)) {
+    console.error(`[icon] failed: ${png}`);
+    failed = true;
   }
 }
 
-console.error(
-  '[icon] Could not create icon.png. Install one of: librsvg2-bin, imagemagick, ffmpeg\n' +
-    '  Or commit media/icon.png and re-run npm run package'
-);
-process.exit(1);
+process.exit(failed ? 1 : 0);

@@ -55,12 +55,19 @@ Or press **F5** in VS Code to launch the Extension Development Host.
 ```bash
 npm run compile
 npm run package
-code --install-extension vscode-curl-notebook-0.2.1.vsix --force
+npm run verify:package
+code --install-extension vscode-curl-notebook-0.2.3.vsix --force
+```
+
+Remove old VSIX files first if `verify:package` warns about the wrong version:
+
+```bash
+rm -f notebook-curl-*.vsix vscode-curl-notebook-0.2.0.vsix vscode-curl-notebook-0.2.1.vsix
 ```
 
 Then reload VS Code (**Developer: Reload Window**).
 
-> **Note:** `vsce` needs a **PNG** for the extension icon (`media/icon.png`). The activity bar still uses `media/icon.svg`. `npm run package` runs `scripts/generate-icon.mjs` first (uses `rsvg-convert`, ImageMagick, or `ffmpeg`).
+> **Note:** Marketplace icon = `media/icon.png`. Activity bar = `activitybar-light.svg` / `activitybar-dark.svg` (24×24, single-color fills only).
 
 ### Marketplace
 
