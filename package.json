@@ -5,7 +5,7 @@
   "version": "0.2.1",
   "publisher": "yasersharifi",
   "license": "MIT",
-  "icon": "media/icon.svg",
+  "icon": "media/icon.png",
   "homepage": "https://github.com/yasersharifi/vscode-curl-notebook#readme",
   "bugs": {
     "url": "https://github.com/yasersharifi/vscode-curl-notebook/issues"
@@ -219,6 +219,8 @@
     "lint": "eslint src --ext .ts",
     "test": "npm run compile && node ./out/test/runTest.js",
     "test:unit": "npm run compile && node --test dist-test/*.test.js",
+    "icon": "node scripts/generate-icon.mjs",
+    "prepackage": "npm run icon",
     "package": "vsce package"
   },
   "devDependencies": {
